@@ -103,6 +103,67 @@ Starting the MongoDB service allows our application to connect to the database. 
 
 ## Step 3: Set Up the MEAN Application
 
-**Create the Project Directory**
+### Create the Project Directory
+
+1. Create a directory for the project and initialize npm. Call the name of the directory Books and open the directory using the commands below:
+
+`mkdir Books && cd Books`
+
+`npm init -y`
+
+![npminit](./image/Mean-init.jpg)
+
+This directory will contain all your project files. Running npm init -y generates a default package.json file which manages project dependencies.
+
+
+2. Install Required Node Packages:
+
+`sudo npm install express`
+
+`sudo npm mongoose body-parser`
+
+- Express: A web framework for handling HTTP requests.
+- Mongoose: Simplifies MongoDB interactions with schema-based models.
+- body-parser: Parses incoming request bodies in middleware.
+
+
+### Server Setup with Node.js and Express
+
+Create a file named server.js in the Books directory:
+`touch server.js` 
+
+open the file with 
+
+`nano server.js`
+
+paste the command below into the file
+
+```
+// server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+// Serve static files from the public folder
+app.use(express.static(__dirname + '/public'));
+
+// Parse JSON request bodies
+app.use(bodyParser.json());
+
+// Import routes from the apps folder
+require('./apps/routes')(app);
+
+// Set the port for the application
+app.set('port', 3300);
+
+// Start the server and listen on the specified port
+app.listen(app.get('port'), () => {
+    console.log('Server up: http://localhost:' + app.get('port'));
+});
+
+```
+
+This file initializes the Express server, sets up middleware for static files and JSON parsing, and imports the route definitions.
+
 
 
