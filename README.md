@@ -27,9 +27,82 @@ Ensure that the EC2 instance’s security group allows inbound traffic on port 3
 Use SSH or AWS CloudShell to connect to your instance.
 
 ## Step 1: Update Ubuntu and Install Node.js 20
-1.1 Update and Upgrade the System
+
+### 1.1 Update and Upgrade the System
 
 `sudo apt update`
 
 `sudo apt upgrade -y`
+
+This will ensure that your system has the latest security patches and software versions.
+
+### 1.2 Install Required Prerequisites for HTTPS Repositories
+Install packages needed for adding new repositories over HTTPS using the command below:
+
+`sudo apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates`
+
+These packages help securely download and verify external packages.
+
+### 1.3 Install Node.js 20 from NodeSource
+Download the Node.js 20 setup script and install it using the commands below:
+
+`curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -`
+
+`sudo apt install -y nodejs`
+
+Node.js is required to run our server-side JavaScript code. Using Node.js 20 ensures compatibility with the latest features and improvements.
+
+### 1.4 Verify Node.js Installation
+Check the versions to confirm the installation:
+
+`node -v`
+`npm -v`
+
+It confirms that the correct versions are installed and ready to use.
+
+## Step 2: Install MongoDB Community Edition 6.0
+
+### 2.1 Import MongoDB GPG Key and Set Up Repository
+
+First, import the MongoDB GPG key for package verification using the command below:
+
+`wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-org-6.0.gpg`
+
+The GPG key ensures that the MongoDB packages are authentic and not tampered with.
+
+create the repository file with this command
+
+`echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-org-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list`
+
+This tells Ubuntu where to fetch MongoDB packages specific to Ubuntu 22.04 (Jammy).
+
+### 2.2 Update and Install MongoDB
+
+Update package lists and install MongoDB:
+
+`sudo apt update`
+
+`sudo apt install -y mongodb-org`
+
+Installing MongoDB Community Edition provides the document database for our MEAN stack.
+
+### 2.3 Start and Enable MongoDB
+Try starting MongoDB using systemd:
+
+`sudo systemctl daemon-reload`
+
+`sudo systemctl start mongod`
+
+Check its status
+
+`sudo systemctl status mongod`
+
+![status](./image/mean-mongodstatus.jpg)
+
+Starting the MongoDB service allows our application to connect to the database. If the service file is missing, refer to troubleshooting later.
+
+## Step 3: Set Up the MEAN Application
+
+**Create the Project Directory**
+
 
